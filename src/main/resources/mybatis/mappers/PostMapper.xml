@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.example.BBS.mapper.PostMapper">
+
+    <select id="boardCount" resultType="int">
+        SELECT
+            count(postId)
+        FROM
+            post_info;
+    </select>
+
+    <select id="findAll" resultType="com.example.BBS.domain.post.PostDto">
+        SELECT
+            p.postId, p.postTitle, u.userName, p.postRead
+        FROM
+            post_info p
+        JOIN
+            user_info u ON p.userName = u.userName;
+    </select>
+
+    <select id="findById" parameterType="Long" resultType="com.example.BBS.domain.post.PostDto">
+        SELECT
+            *
+        FROM
+            post_info
+        WHERE
+            postId=#{postId};
+    </select>
+
+    <insert id="add" parameterType="com.example.BBS.domain.post.PostDto" useGeneratedKeys="true" keyProperty="postId">
+       INSERT INTO
+            post_info (postTitle, postContent, userName)
+        VALUES
+            (#{postTitle}, #{postContent}, #{userName})
+    </insert>
+
+    <update id="update" parameterType="com.example.BBS.domain.post.PostDto">
+        UPDATE
+            post_info
+        SET
+            postTitle = #{postTitle}, postContent = #{postContent}
+        WHERE
+            postId = #{postId};
+    </update>
+
+    <delete id="delete" parameterType="Long">
+        DELETE
+        FROM post_info
+        WHERE postId = #{postId};
+    </delete>
+</mapper>

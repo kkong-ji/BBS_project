@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout">
+
+<head>
+    <meta charset="UTF-8">
+    <title>게시판 상세 내용</title>
+    <link href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+    <style>
+        .post-details {
+            background-color: #f8f9fa;
+            border: 1px solid #dee2e6;
+            border-radius: 5px;
+            padding: 20px;
+            margin-bottom: 20px;
+        }
+    </style>
+</head>
+
+<body>
+<div class="container">
+    <div class="py-5 text-center">
+        <h2>게시글</h2>
+    </div>
+
+    <div class="post-details">
+        <div class="form-group row">
+            <label class="col-sm-2 col-form-label">No.</label>
+            <div class="col-sm-10">
+                <input type="text" class="form-control" th:value="${board.postId}" readonly>
+            </div>
+        </div>
+
+        <div class="form-group row">
+            <label class="col-sm-2 col-form-label">작성자</label>
+            <div class="col-sm-10">
+                <input type="text" class="form-control" th:value="${board.userName}" readonly>
+            </div>
+        </div>
+
+        <div class="form-group row">
+            <label class="col-sm-2 col-form-label">제목</label>
+            <div class="col-sm-10">
+                <input type="text" class="form-control" th:value="${board.postTitle}" readonly>
+            </div>
+        </div>
+
+        <div class="form-group row">
+            <label class="col-sm-2 col-form-label">조회 수</label>
+            <div class="col-sm-10">
+                <input type="text" class="form-control" th:value="${board.postRead}" readonly>
+            </div>
+        </div>
+
+        <div class="form-group row">
+            <label class="col-sm-2 col-form-label">내용</label>
+            <div class="col-sm-10">
+                <textarea class="form-control" rows="5" th:text="${board.postContent}" readonly></textarea>
+            </div>
+        </div>
+
+    </div>
+
+    <div class="row">
+        <div class="col">
+            <button class="btn btn-primary" onclick="location.href='editForm.html'"
+                    th:onclick="|location.href='@{/boards/{postId}/edit(postId=${board.postId})}'|">게시글 수정
+            </button>
+        </div>
+
+        <div class="col">
+            <button class="btn btn-danger" onclick="location.href='items.html'"
+                    th:onclick="|location.href='@{/boards/{postId}/delete(postId=${board.postId})}'|">게시글 삭제
+            </button>
+        </div>
+
+        <div class="col">
+            <button class="btn btn-secondary" onclick="location.href='boards.html'"
+                    th:onclick="|location.href='@{/boards/main}'|">목록으로</button>
+        </div>
+    </div>
+</div>
+
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+</body>
+
+</html>

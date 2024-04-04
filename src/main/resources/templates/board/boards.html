@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+<html lang="en"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout">
+
+<head>
+    <meta charset="UTF-8">
+    <title>게시판</title>
+    <!-- 부트스트랩 링크 추가 -->
+    <link href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+    <!-- jQuery -->
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+    <!-- Bootstrap JS -->
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+    <script>
+        function openModal() {
+            $('#addModal').modal('show');
+        }
+        $(document).ready(function() {
+            $('#submitBtn').click(function() {
+                var formData = {
+                    title: $('#postTitle').val(),
+                    content: $('#postContent').val(),
+                    name: $('#userName').val()
+                };
+
+                $.ajax({
+                    url: '/boards/main',
+                    type: 'POST',
+                    data: formData,
+                    success: function(response) {
+                        console.log(response);
+                        $('#addModal').modal('hide');
+                        // 성공 알림창 표시
+                        showAlert("success", "저장이 완료되었습니다.");
+
+                    },
+                    error: function(xhr, status, error) {
+                        console.error(xhr.responseText);
+                        // 오류 알림창 표시
+                        showAlert("danger", "저장실패: " + xhr.responseText);
+                    }
+                });
+            });
+        });
+
+        // 알람창 표시 함수
+        function showAlert(type, message) {
+            $('#alertContainer').append('<div class="alert alert-' + type + ' alert-dismissible fade show" role="alert">' +
+                message +
+                '<button type="button" class="close" data-dismiss="alert" aria-label="Close">' +
+                '<span aria-hidden="true">&times;</span>' +
+                '</button>' +
+                '</div>');
+        }
+    </script>
+    <style>
+        .btn-container {
+            display: flex;
+            justify-content: flex-end;
+            margin-top: 20px;
+            margin-bottom: 30px;
+        }
+        .btn-container .btn {
+            margin-left: 10px;
+        }
+        .custom-textarea {
+            width: 400px;
+            min-height: 500px;
+        }
+    </style>
+</head>
+<body>
+<div class="container">
+    <table class="table table-striped">
+        <h1>게시물 목록</h1>
+        <div class="btn-container">
+            <button class="btn btn-primary" onclick="openModal()" type="button">게시물 등록</button>
+        </div>
+        <thead class="thead-dark">
+        <tr>
+            <th>No.</th>
+            <th>작성자</th>
+            <th>제목</th>
+            <th>조회수</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr th:each="board : ${boards}">
+            <td th:text="${board.postId}">No.</td>
+            <td th:text="${board.userName}">작성자</td>
+            <td><a href="content.html" th:href="@{|/boards/${board.postId}|}" th:text="${board.postTitle}">제목</a></td>
+            <td th:text="${board.postRead}">0</td>
+        </tr>
+        </tbody>
+    </table>
+</div>
+<!-- newPostModal.html -->
+<div class="modal fade" id="addModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+     aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">게시물 등록</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <form action="board.html" th:action method="post">
+                    <div>
+                        <label for="postTitle">제목</label>
+                        <input type="text" id="postTitle" name="postTitle" class="form-control" placeholder="제목을 입력해주세요">
+                    </div>
+                    <div>
+                        <label for="postContent">본문</label>
+                        <textarea class="form-control custom-textarea" id="postContent" name="postContent" placeholder="본문을 입력해주세요">
+                        </textarea>
+                    </div>
+                    <div>
+                        <label for="userName">작성자</label>
+                        <input type="text" id="userName" name="userName" class="form-control" placeholder="작성자를 입력해주세요">
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal">취소</button>
+                        <button type="submit" class="btn btn-primary">게시글 등록</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+</body>
+</html>

@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout">
+
+<head>
+    <meta charset="UTF-8">
+    <title>게시물 수정</title>
+    <!-- 부트스트랩 CDN 링크 추가 -->
+    <link href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+</head>
+
+<body>
+<div class="container">
+    <div class="py-5 text-center">
+        <h2>게시물 수정</h2>
+    </div>
+
+    <form action="board.html" th:action method="post">
+        <div>
+            <label for="postId">No.</label>
+            <input type="text" id="postId" name="postId" class="form-control" value="1" th:value="${board.postId}" readonly>
+        </div>
+        <div>
+            <label for="postTitle">제목</label>
+            <input type="text" id="postTitle" name="postTitle" class="form-control" th:value="${board.postTitle}" placeholder="제목을 입력해주세요">
+        </div>
+        <div>
+            <label for="postContent">내용</label>
+            <input type="text" id="postContent" name="postContent" class="form-control" th:value="${board.postContent}"
+                   placeholder="본문을 입력해주세요">
+        </div>
+        <div>
+            <label for="userName">작성자</label>
+            <input type="text" id="userName" name="userName" class="form-control" th:value="${board.userName}"
+                   readonly>
+        </div>
+        <hr class="my-4">
+        <div class="row">
+            <div class="col">
+                <button class="w-100 btn btn-primary btn-lg" type="submit">
+                    저장
+                </button>
+            </div>
+            <div class="col">
+                <button class="w-100 btn btn-secondary btn-lg"
+                        onclick="location.href='board.html'"
+                        th:onclick="|location.href='@{/boards/{postId}(postId=${board.postId})}'|"
+                        type="button">취소</button>
+            </div>
+        </div>
+    </form>
+</div>
+
+<!-- 부트스트랩 스크립트 링크 추가 -->
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+</body>
+</html>
